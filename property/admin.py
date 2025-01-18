@@ -3,6 +3,7 @@ from .models import Flat, Complaint
 
 
 class AuthorAdmin(admin.ModelAdmin):
+    raw_id_fields = ["liked_by"]
     search_fields = ['town', 'address', 'owner']
     readonly_fields = ['created_at']
     list_display = ['address', 'price',
