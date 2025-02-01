@@ -66,6 +66,9 @@ class Complaint(models.Model):
                              verbose_name='Квартира, на которую пожаловались', null=True, blank=True)
     text = models.TextField(verbose_name='Текст жалобы', null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.user.get_short_name()} -> {self.flat.address}'
+
 
 class Owner(models.Model):
     fio = models.CharField(verbose_name="ФИО владельца", max_length=100)
@@ -75,3 +78,6 @@ class Owner(models.Model):
         region='RU', null=True, blank=True, verbose_name='Нормализированный номер владельца')
     flats = models.ManyToManyField(
         'Flat', verbose_name='Квартиры в собственности', blank=True, related_name='owners')
+
+    def __str__(self):
+        return f'{self.fio}'
