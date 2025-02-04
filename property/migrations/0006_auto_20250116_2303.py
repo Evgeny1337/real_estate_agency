@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
             new_building=False)
 
     dependencies = [
-        ('property', '0005_auto_20250116_2236'),
+        ('property', '0004_auto_20250116_2222'),
     ]
 
     operations = [
