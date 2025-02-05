@@ -11,12 +11,25 @@ class OwnerInline(admin.TabularInline):
 @admin.register(Flat)
 class AuthorAdmin(admin.ModelAdmin):
     raw_id_fields = ["liked_by"]
-    search_fields = ['town', 'address', 'owner']
+    search_fields = ['town', 'address', 'owners__fio']
     readonly_fields = ['created_at']
     list_display = ['address', 'price',
-                    'new_building', 'construction_year', 'town', 'owner_pure_phone', 'owners_phonenumber']
+                    'new_building', 'construction_year', 'town', 'pure_number', 'number']
+
     list_editable = ['new_building']
     list_filter = ['new_building', 'rooms_number', 'has_balcony']
+
+    def number(self, obj):
+        owner = obj.owners.first()
+        return owner.number if owner else None
+
+    def pure_number(self, obj):
+        owner = obj.owners.first()
+        return owner.pure_number if owner else None
+
+    number.short_description = 'Номер владельца'
+    pure_number.short_description = 'Нормализированный номер владельца'
+
     inlines = [OwnerInline]
 
 

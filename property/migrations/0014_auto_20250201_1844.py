@@ -2,24 +2,21 @@
 
 from django.db import migrations
 import phonenumbers
-from django.db import transaction
 
 
 class Migration(migrations.Migration):
     def parse_phone(apps, schema_editor):
         Flat = apps.get_model('property', 'Flat')
-        flats = Flat.objects.all()
-        with transaction.atomic():
-            for flat in flats:
-                parsed_number = phonenumbers.parse(
-                    flat.owners_phonenumber, 'RU')
-                if phonenumbers.is_valid_number(parsed_number):
-                    flat.owner_pure_phone = phonenumbers.format_number(
-                        parsed_number, phonenumbers.PhoneNumberFormat.E164)
-                    flat.save()
+        for flat in Flat.objects.iterator():
+            parsed_number = phonenumbers.parse(
+                flat.owners_phonenumber, 'RU')
+            if phonenumbers.is_valid_number(parsed_number):
+                flat.owner_pure_phone = phonenumbers.format_number(
+                    parsed_number, phonenumbers.PhoneNumberFormat.E164)
+                flat.save()
 
     dependencies = [
-        ('property', '0013_auto_20250119_2035'),
+        ('property', '0011_auto_20250118_1739'),
     ]
 
     operations = [
